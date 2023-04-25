@@ -82,7 +82,7 @@ def login():
     if email_entry.get() == 'البريد الالكتروني' or password_entry.get() == 'كلمه السر':
         messagebox.showerror('Error', 'all fields are required')
     else:
-        con_db = pymysql.connect(host='localhost', user='root', password='123456789')
+        con_db = pymysql.connect(host='localhost', user='root', password='abdoX15112000')
         mycursor = con_db.cursor()
         query = 'use facerecognation_attendance_System'
         mycursor.execute(query)

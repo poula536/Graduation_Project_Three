@@ -61,12 +61,12 @@ attendance_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', 
 attendance_button.place(x=140, y=80)
 
 
-add_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="تغيير دكتور", command=edit_data_btn,
+add_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="تعديل بيانات الدكتور", command=edit_data_btn,
                     font=("Arial", 14))
 add_button.place(x=140, y=150)
 
-sheets_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="اضافة ماده جديده",
-                       command=add_course_btn, font=("Arial", 14))
-sheets_button.place(x=140, y=220)
+#sheets_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="اضافة ماده جديده",
+#                      command=add_course_btn, font=("Arial", 14))
+#sheets_button.place(x=140, y=220)
 
 admin_dashboard_window.mainloop()
