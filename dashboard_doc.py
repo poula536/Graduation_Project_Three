@@ -1,6 +1,8 @@
 import tkinter
 from tkinter import *
 
+import pymysql
+
 doctor_window = Tk()
 doctor_window.title('Dashboard')
 doctor_window.geometry("925x500+300+200")
