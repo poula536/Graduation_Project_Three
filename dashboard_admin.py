@@ -41,8 +41,8 @@ def creatAdmin():
 
 def edit_data_btn():
     admin_dashboard_window.withdraw()
-    import editcourse
-    editcourse.editcourse_window.deiconify()
+    import modify
+    modify.modify_window.deiconify()
 
 
 def add_course_btn():
@@ -61,7 +61,7 @@ attendance_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', 
 attendance_button.place(x=140, y=80)
 
 
-add_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="تغيير دكتور", command=edit_data_btn,
+add_button = Button(frame, width=15, border=0, bg="#0081C9", fg='white', text="Modify", command=edit_data_btn,
                     font=("Arial", 14))
 add_button.place(x=140, y=150)
 

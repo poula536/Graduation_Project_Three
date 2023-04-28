@@ -8,7 +8,8 @@ login_window.title('Login')
 login_window.geometry("925x500+300+200")
 login_window.config(bg="#ECF9FF")
 login_window.resizable(False,False)
-
+img_logo = tkinter.PhotoImage(file='logo.png', master=login_window)
+login_window.iconphoto(False, img_logo)
 #logo image
 img_logo = tkinter.PhotoImage(file='logo.png',master=login_window)
 Label(login_window,image=img_logo, bg="white",background="#ECF9FF").place(x=50,y=120)

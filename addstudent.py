@@ -8,7 +8,8 @@ Newstudent_window.title('Take New Student')
 Newstudent_window.geometry("925x500+300+200")
 Newstudent_window.config(bg="#ECF9FF")
 Newstudent_window.resizable(False,False)
-
+img_logo = tkinter.PhotoImage(file='logo.png',master=Newstudent_window)
+Newstudent_window.iconphoto(False, img_logo)
 #back forward button
 def backfw_btn():
     Newstudent_window.withdraw()

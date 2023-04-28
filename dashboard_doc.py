@@ -1,6 +1,5 @@
 import tkinter
 from tkinter import *
-
 import pymysql
 
 doctor_window = Tk()
@@ -8,7 +7,8 @@ doctor_window.title('Dashboard')
 doctor_window.geometry("925x500+300+200")
 doctor_window.config(bg="#ECF9FF")
 doctor_window.resizable(False,False)
-
+img_logo = tkinter.PhotoImage(file='logo.png', master=doctor_window)
+doctor_window.iconphoto(False, img_logo)
 
 #back forward button
 def backfw_btn():

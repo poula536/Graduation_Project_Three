@@ -8,8 +8,8 @@ new_admin_window.title('Add Admin')
 new_admin_window.geometry("925x500+300+200")
 new_admin_window.config(bg="#ECF9FF")
 new_admin_window.resizable(False, False)
-
-#back forward button
+img_logo = tkinter.PhotoImage(file='logo.png', master=new_admin_window)
+new_admin_window.iconphoto(False, img_logo)
 def backfw_btn():
     new_admin_window.withdraw()
     import dashboard_admin

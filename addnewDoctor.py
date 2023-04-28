@@ -21,7 +21,9 @@ back_forward_btn = Button(new_doctor_window,cursor='hand2',image=bfw_btn,bd=0,bg
 back_forward_btn.place(x=10,y=5)
 
 
+
 img_logo = tkinter.PhotoImage(file='logo.png',master=new_doctor_window)
+new_doctor_window.iconphoto(False, img_logo)
 Label(new_doctor_window, bg="white",image=img_logo ,background="#ECF9FF").place(x=50, y=120)
 frame = Frame(new_doctor_window, width=550, height=400, bg="#ECF9FF")
 frame.place(x=450, y=50)
