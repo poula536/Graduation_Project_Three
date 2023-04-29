@@ -165,7 +165,6 @@ department_entry.grid(row=2,column=1,padx=5,pady=3)
 
 def update():
     try:
-
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_email = mycursor.fetchone()
@@ -186,11 +185,11 @@ def update():
             if messagebox.askyesno("Confirm","Are you sure want to update this course"):
                 update_email_query = 'update course set lecturer_email =%s where course_name =%s'
                 mycursor.execute(update_email_query,(lec_email,course_name))
+                con_db.commit()
                 reset()
                 messagebox.showinfo('Done', 'Updated Successfully')
             else:
                 return True
-
     except Exception as err:
         messagebox.showwarning('Error','DB exception: %s' % err)
 

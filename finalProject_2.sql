@@ -2,17 +2,24 @@ create database facerecognation_attendance_System;
 use facerecognation_attendance_System;
 
 create table lecturer(
+	lecturer_id int not null auto_increment,
     full_name varchar(30) not null,
     email varchar(50),
     pass varchar(40) not null,
-    department_name varchar(20) not null,
-    constraint lecturer_pk primary key (email)
+    dep_name varchar(30),
+    department_id int ,
+    constraint lecturer_pk primary key (lecturer_id),
+    constraint lect_dept_fk foreign key (department_id) references department(department_id)
 );
 
+#drop table lecturer;
+insert into lecturer(full_name,email,pass,dep_name) values('poula mansour','poula@gmail.com',1234,'علوم حاسب'),
+																		('pepo maher','pepo@gmail.com',12345,'علوم حاسب'),
+																		('basil essam','basil@gmail.com',123456,'نظم ومعلومات');
+#alter table lecturer add column department_name varchar(30) not null references department (dep_name) ;
+#alter table lecturer add constraint lect_dept_fk foreign key (department_name) references department(dep_name);
+#select * from lecturer;
 
-alter table lecturer add column department_name varchar(30) not null references department (dep_name) ;
-alter table lecturer add constraint lect_dept_fk foreign key (department_name) references department(dep_name);
-select * from lecturer;
 
 create table admin(
 	 full_name varchar(30) not null,
@@ -22,40 +29,64 @@ create table admin(
 insert into admin values('poula mansour','320200029'),
 						('abanoub maher','320200156'),
 						('basil essam','320200028');
+
+
 create table student
 (
-fname varchar(25),
-lname varchar(25),
-student_id int ,
+student_fullname varchar(30) not null,
+student_id int not null,
+department_name varchar(30) not null,
 constraint student_pk primary key (student_id)
 );
-alter table student add column department_name varchar(30) not null references department (dep_name);
-#alter table student drop constraint student_dept_fk foreign key(department_id) references department(department_id);
-alter table student drop column department_id int not null;
-delete from student where student_id like '%320%'
-select * from student;
+
+
+#insert into student(student_fullname,student_id,department_name) values('poula mansour gabr',320200029,'علوم حاسب'),
+																	   #('abanoub maher moaoud',320200157,'علوم حاسب'),
+                                                                       #('basil essam',320200123,'نظم ومعلومات');
+#drop table student;
+#select student_fullname , student_id from student st join department dep on st.department_name = dep.dep_name;
+#delete from student;
+
+
 create table course
 (
+course_id int not null auto_increment,
 course_name varchar(30) not null,
-course_id int ,
+dept_name varchar(30) not null,
+dep_id int ,
 lecturer_email varchar(50),
+lecturer_id int ,
+acadymic_year varchar(25) not null,
+semester varchar(25) not null,
+student_id int,
 constraint course_pk primary key (course_id),
-dept_name varchar(30) references department (dep_name)
+constraint course_student_fk foreign key (student_id) references student(student_id),
+constraint course_lecturer_fk foreign key (lecturer_id) references lecturer(lecturer_id),
+constraint course_depart_fk foreign key(dep_id) references department (department_id)
 );
-alter table course add column student_id int;
-alter table course add constraint course_student_fk foreign key (student_id) references student(student_id);
-alter table course add column acadymic_year varchar(25) not null;
-alter table course add column smaster varchar(25) not null;
+insert into course(course_name,dept_name,dep_id,lecturer_email,acadymic_year,semester,student_id) values('database','علوم حاسب',1,'poula@gmail.com','22/23','first',320200029),
+																											('operating system','علوم حاسب',1,'pepo@gmail.com','22/23','first',320200157),
+																											('structure programming','علوم حاسب',1,'basil@gmail.com','22/23','second',320200123);
+																			
+
+
+
+#drop table course;
+#alter table course add column student_id int;
+#alter table course add constraint course_student_fk foreign key (student_id) references student(student_id);
+#alter table course add column acadymic_year varchar(25) not null;
+#alter table course add column smaster varchar(25) not null;
+#alter table course add constraint course_lecturer_fk foreign key (lecturer_id) references lecturer(lecturer_id);
+
 create table department
 (
 dep_name varchar(30) not null,
-department_id int ,
+department_id int not null auto_increment,
 constraint department_pk primary key (department_id)
 );
-select * from department;
-delete from department where department_id between 1 and 3
-alter table department add constraint depname_pk primary key(dep_name);
-insert into department values('علوم حاسب'),
+#select * from department;
+
+insert into department(dep_name) values('علوم حاسب'),
 							('نظم ومعلومات'),
                             ('اداره اعمال');
                             
@@ -104,17 +135,18 @@ stu_id int references student(student_id) ,
 face_id varchar(50) references face_record (face_id),
 constraint capturephoto_pk primary key (stu_id)
 );
-
+select * from course;
 #query to show table course and department
-select co.course_name ,dep.dep_name from course co right outer join department dep on dep.dep_name= co.dept_name
+select co.course_name ,dep.dep_name from course co right outer join department dep on dep.department_id = co.dep_id
 union
-select co.course_name ,dep.dep_name from course co right outer join department dep on dep.dep_name= co.dept_name; 
+select co.course_name ,dep.dep_name from course co left outer join department dep on dep.department_id = co.dep_id; 
 
 #insert into course (course_name ,course_id ,dept_name,acadymic_year,smaster) values( 'bussiness ' ,16,'اداره اعمال','22/23','first');
 
+select * from course;
 #query to show table lecturer that didn't have a course 
-select distinct co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email , lec.department_name
-from course co right outer join lecturer lec on lec.email = co.lecturer_email and co.dept_name =  lec.department_name;
+select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email , lec.dep_name
+from course co right outer join lecturer lec on lec.email = co.lecturer_email;
 
 select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email
 from course co right outer join lecturer lec on lec.email = co.lecturer_email 
@@ -125,17 +157,18 @@ from course co left outer join lecturer lec on lec.email = co.lecturer_email ;
 select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email
 from course co  join lecturer lec on lec.email = co.lecturer_email ;
 
-#query to show table course and student
-select  co.course_id ,co.course_name , co.student_id ,co.dept_name , co.acadymic_year , co.smaster, stu.fname , stu.lname ,stu.student_id
-from course co right outer join student stu on co.student_id = stu.student_id
-union all
-select  co.course_id ,co.course_name,co.student_id , co.dept_name , co.acadymic_year , co.smaster, stu.fname , stu.lname ,stu.student_id
-from course co left outer join student stu on co.student_id = stu.student_id;
 
-select * from course;
+select * from student;
+#query to show table course and student
+select  co.course_id ,co.course_name , co.student_id ,co.dept_name , co.acadymic_year , co.semester, stu.student_fullname,stu.student_id
+from course co  join student stu on co.student_id = stu.student_id;
+
+select * from lecturer;
 update course set lecturer_email = 'asmaa@gmail.com' where course_name ='bussiness ';
 
 select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email
 from course co left outer join lecturer lec on lec.email = co.lecturer_email ;
 
 select * from lecturer;
+
+update course set full_name ='basil essam' , email = 'basil@gmail.com' , pass ='1234' , department_name ='علوم حاسب'  where lecturer_id =3
