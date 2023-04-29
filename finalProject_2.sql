@@ -22,14 +22,16 @@ insert into lecturer(full_name,email,pass,dep_name) values('poula mansour','poul
 
 
 create table admin(
+	 admin_id int not null auto_increment,
 	 full_name varchar(30) not null,
-	 pass int,
-     constraint admin_pk primary key (pass)
+	 pass varchar(40) not null,
+     constraint admin_pk primary key (admin_id)
 );
-insert into admin values('poula mansour','320200029'),
-						('abanoub maher','320200156'),
-						('basil essam','320200028');
+insert into admin(full_name,pass)values('poula mansour','123'),
+										('abanoub maher','1234'),
+										('basil essam','12345');
 
+select * from course;
 
 create table student
 (
@@ -53,12 +55,12 @@ create table course
 course_id int not null auto_increment,
 course_name varchar(30) not null,
 dept_name varchar(30) not null,
-dep_id int ,
 lecturer_email varchar(50),
-lecturer_id int ,
 acadymic_year varchar(25) not null,
 semester varchar(25) not null,
 student_id int,
+dep_id int ,
+lecturer_id int ,
 constraint course_pk primary key (course_id),
 constraint course_student_fk foreign key (student_id) references student(student_id),
 constraint course_lecturer_fk foreign key (lecturer_id) references lecturer(lecturer_id),
@@ -169,6 +171,6 @@ update course set lecturer_email = 'asmaa@gmail.com' where course_name ='bussine
 select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email
 from course co left outer join lecturer lec on lec.email = co.lecturer_email ;
 
-select * from lecturer;
+select * from course;
 
 update course set full_name ='basil essam' , email = 'basil@gmail.com' , pass ='1234' , department_name ='علوم حاسب'  where lecturer_id =3

@@ -263,10 +263,6 @@ def reset():
     except Exception as err:
         messagebox.showwarning('Error', 'DB exception: %s' % err)
 
-
-
-
-
 #search section
 #get data
 txtvar_of_lecid = StringVar(master=new_doctor_window)
@@ -377,7 +373,7 @@ def update():
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_email = mycursor.fetchone()
-        if txtvar_of_lectemail.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
+        if txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
             messagebox.showerror('Eror', 'All fields are required')
         elif row_email is None:
             messagebox.showerror('Error', 'This Email did not create yet')
@@ -401,7 +397,7 @@ def update():
 
 def delete():
     try:
-        if txtvar_of_lectemail.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
+        if txtvar_of_lecid.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
             messagebox.showerror('Eror', 'All fields are required')
         elif messagebox.askyesno("Confirm", "Are you sure want to delete this record"):
             delete_lec_query = "delete from lecturer where lecturer_id = %s"
