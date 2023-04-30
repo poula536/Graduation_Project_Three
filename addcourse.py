@@ -494,12 +494,17 @@ def insert():
         query = "select * from student where student_id=%s"
         mycursor.execute(query, (txtvar_of_studid.get()))
         row_studid = mycursor.fetchone()
+        query = 'select * from course where course_id=%s '
+        mycursor.execute(query,(txtvar_of_courseid.get()))
+        row_course_id = mycursor.fetchone()
         if txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get()== '' or txtvar_of_studid.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
         elif row_lec_email is None:
             messagebox.showerror('Error', 'Lecturer email did not create yet')
         elif row_studid is None:
             messagebox.showerror('Error', 'Student Id does not exist')
+        elif row_course_id is not None:
+            messagebox.showerror('Error', 'This record is already exist')
         else:
             insert_lec_query = "insert into course(course_name,dept_name,lecturer_email,acadymic_year,semester,student_id) values(%s,%s,%s,%s,%s,%s)"
             mycursor.execute(insert_lec_query, (

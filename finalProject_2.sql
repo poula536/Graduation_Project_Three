@@ -14,8 +14,8 @@ create table lecturer(
 
 #drop table lecturer;
 insert into lecturer(full_name,email,pass,dep_name) values('poula mansour','poula@gmail.com',1234,'علوم حاسب'),
-																		('pepo maher','pepo@gmail.com',12345,'علوم حاسب'),
-																		('basil essam','basil@gmail.com',123456,'نظم ومعلومات');
+															('pepo maher','pepo@gmail.com',12345,'علوم حاسب'),
+															('basil essam','basil@gmail.com',123456,'نظم ومعلومات');
 #alter table lecturer add column department_name varchar(30) not null references department (dep_name) ;
 #alter table lecturer add constraint lect_dept_fk foreign key (department_name) references department(dep_name);
 #select * from lecturer;
@@ -47,7 +47,7 @@ constraint student_pk primary key (student_id)
                                                                        #('basil essam',320200123,'نظم ومعلومات');
 #drop table student;
 #select student_fullname , student_id from student st join department dep on st.department_name = dep.dep_name;
-#delete from student;
+#select * from lecturer;
 
 
 create table course
@@ -94,20 +94,21 @@ insert into department(dep_name) values('علوم حاسب'),
                             
 						                    
                                                        
-create table alldata
-(
-acadymic_year varchar(25) not null,
-lec_email varchar(50),
-stu_id int references student (student_id),
-course_id int references course (course_id),
-constraint alldata_pk primary key (stu_id),
-constraint alldata_lect_fk foreign key(lec_email) references lecturer(email)
-);
-drop table alldata;
-alter table alldata add column lec_email varchar(50);
-alter table alldata add constraint alldata_lect_fk foreign key(lec_email) references lecturer(email);
-insert into alldata (acadymic_year,lec_email,stu_id,course_id)values ('18/10/2000','poula@gmail.com',320200029,11);
-update alldata set acadymic_year = '18/10/2000' where lec_email = 'poula@gmail.com';
+#create table alldata
+#(
+#acadymic_year varchar(25) not null,
+#lec_email varchar(50),
+#stu_id int references student (student_id),
+#course_id int references course (course_id),
+#constraint alldata_pk primary key (stu_id),
+#constraint alldata_lect_fk foreign key(lec_email) references lecturer(email)
+#);
+#drop table alldata;
+#alter table alldata add column lec_email varchar(50);
+#alter table alldata add constraint alldata_lect_fk foreign key(lec_email) references lecturer(email);
+#insert into alldata (acadymic_year,lec_email,stu_id,course_id)values ('18/10/2000','poula@gmail.com',320200029,11);
+#update alldata set acadymic_year = '18/10/2000' where lec_email = 'poula@gmail.com';
+
 
 select * from student;
 insert into student values('poula','mansour',320200029,'علوم حاسب');

@@ -4,7 +4,7 @@ from tkinter import messagebox
 import pymysql
 
 login_window=Tk()
-login_window.title('Login')
+login_window.title('Lecturer Login')
 login_window.geometry("925x500+300+200")
 login_window.config(bg="#ECF9FF")
 login_window.resizable(False,False)
@@ -16,7 +16,8 @@ Label(login_window,image=img_logo, bg="white",background="#ECF9FF").place(x=50,y
 
 frame = Frame(login_window,width=350,height=370,bg="#ECF9FF")
 frame.place(x=480,y=50)
-heading = Label(frame,text="تسجيل دخول",fg="black",bg="#ECF9FF",font=('Microsoft YaHei UI Light ',25,'bold'))
+
+heading = Label(frame,text="Log In",fg="black",bg="#ECF9FF",font=('Microsoft YaHei UI Light ',25,'bold'))
 heading.place(x=100,y=5)
 
 def on_enter(e):
@@ -24,11 +25,12 @@ def on_enter(e):
 def on_leave(e):
     name =email_entry.get()
     if name=='':
-        email_entry.insert(0, 'البريد الالكتروني')
+        email_entry.insert(0, 'Email')
 
-email_entry = Entry(frame,width=35,fg='#181823',border=0,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',15))
+txtvr_of_email = StringVar(master=login_window)
+email_entry = Entry(frame,width=35,textvariable=txtvr_of_email,fg='#181823',border=0,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',15))
 email_entry.place(x=30,y=100)
-email_entry.insert(0,'البريد الالكتروني')
+email_entry.insert(0,'Email')
 email_entry.bind('<FocusIn>',on_enter)
 email_entry.bind('<FocusOut>',on_leave)
 
@@ -39,11 +41,11 @@ def on_enter(e):
 def on_leave(e):
     password =password_entry.get()
     if password=='':
-        password_entry.insert(0, 'كلمه السر')
+        password_entry.insert(0, 'Password')
 
 password_entry = Entry(frame,width=35,fg='#181823',border=0,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',15))
 password_entry.place(x=30,y=180)
-password_entry.insert(0,'كلمه السر')
+password_entry.insert(0,'Password')
 password_entry.bind('<FocusIn>',on_enter)
 password_entry.bind('<FocusOut>',on_leave)
 Frame(frame,width=295,height=2,bg="black").place(x=25,y=205)
@@ -69,7 +71,7 @@ def great_doc():
     query = 'use facerecognation_attendance_System'
     mycursor.execute(query)
     query = 'select full_name from lecturer where email=%s'
-    mycursor.execute(query, (email_entry.get()))
+    mycursor.execute(query, (txtvr_of_email.get()))
     row = mycursor.fetchall()[0]
     tex = "welcome doctor "
     return tex +" ".join(row)
@@ -80,7 +82,7 @@ def great_doc():
 
 #connect to database
 def login():
-    if email_entry.get() == 'البريد الالكتروني' or password_entry.get() == 'كلمه السر':
+    if email_entry.get() == 'Email' or password_entry.get() == 'Password':
         messagebox.showerror('Error', 'all fields are required')
     else:
         con_db = pymysql.connect(host='localhost', user='root', password='123456789')
@@ -95,7 +97,7 @@ def login():
         else:
             login_window.withdraw()
             from dashboard_doc import doctor_window
-            doctor_window.withdraw()
+            #doctor_window.withdraw()
             Label(doctor_window,text=great_doc(),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30)).place(x=210,y=20)
             doctor_window.deiconify()
 
@@ -106,13 +108,13 @@ def admin_login():
        adminlogin.adminlogin_window.deiconify()
 
 
-btn_login = Button(frame,cursor='hand2',width=39,pady=7,text="تسجيل الدخول",
-                   bg="#57a1f8",fg='white',border=0,command=login)
-btn_login.place(x=35,y=250)
+btn_login = Button(frame,cursor='hand2',width=25,pady=7,padx=20,text="Login",
+                   bg="#57a1f8",fg='white',font=('Microsoft YaHei UI Light ',12,'bold'),border=0,command=login)
+btn_login.place(x=30,y=250)
 
 admin_btn = Button(frame,text="Log in as admin",cursor='hand2',fg='red',bg="#ECF9FF",bd=0,activebackground="#ECF9FF",
-                   font=('Microsoft YaHei UI Light ',10),command=admin_login)
-admin_btn.place(x=85,y=300)
+                   font=('Microsoft YaHei UI Light ',10,'bold'),command=admin_login)
+admin_btn.place(x=115,y=300)
 
 
 

@@ -1,6 +1,5 @@
 import tkinter
 from tkinter import *
-import pymysql
 
 doctor_window = Tk()
 doctor_window.title('Dashboard')
@@ -22,6 +21,8 @@ back_forward_btn.place(x=10,y=5)
 
 
 
+#doct_name_labl=Label(doctor_window,text=great_doc(),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30))
+#doct_name_labl.place(x=210,y=20)
 
 #frame for subjects
 fram_one=Frame(doctor_window,width=250,height=230,bg="#0081C9").place(x=30,y=130)
