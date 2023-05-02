@@ -97,7 +97,7 @@ def login():
         else:
             login_window.withdraw()
             from dashboard_doc import doctor_window
-            #doctor_window.withdraw()
+            doctor_window.withdraw()
             Label(doctor_window,text=great_doc(),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30)).place(x=210,y=20)
             doctor_window.deiconify()
 

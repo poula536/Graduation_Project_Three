@@ -261,7 +261,7 @@ s = ttk.Style(addcourse_window)
 s.theme_use('clam')
 s.configure('Treeview.Heading', background="green3")
 
-trv = ttk.Treeview(Course_list_frame, columns=(1,2,3,4,5,6,7),show="headings",height="7")
+trv = ttk.Treeview(Course_list_frame, columns=(1,2,3,4,5,6),show="headings",height="7")
 trv.pack()
 
 trv.column(1, anchor=CENTER)
@@ -282,8 +282,8 @@ trv.heading(5, text="Acadymic Year")
 trv.column(6, anchor=CENTER)
 trv.heading(6, text="Semester")
 
-trv.column(7, anchor=CENTER)
-trv.heading(7, text="Student Id")
+#trv.column(7, anchor=CENTER)
+#trv.heading(7, text="Student Id")
 
 #show the table of the lecturer
 try:
@@ -310,7 +310,8 @@ txtvar_of_department = StringVar(master=addcourse_window)
 txtvar_of_lectemail = StringVar(master=addcourse_window)
 txtvar_of_acadymic_year = StringVar(master=addcourse_window)
 txtvar_of_semester = StringVar(master=addcourse_window)
-txtvar_of_studid = StringVar(master=addcourse_window)
+#txtvar_of_studid = StringVar(master=addcourse_window)
+
 #search for record
 #txtvar_of_search = StringVar()
 def search():
@@ -350,7 +351,7 @@ def getrow(event):
     txtvar_of_lectemail.set(data['values'][3])
     txtvar_of_acadymic_year.set(data['values'][4])
     txtvar_of_semester.set(data['values'][5])
-    txtvar_of_studid.set(data['values'][6])
+    #txtvar_of_studid.set(data['values'][6])
 
 trv.bind("<Double-1>", getrow)
 
@@ -402,6 +403,7 @@ semester_combobox.grid(row=4,column=1,padx=5,pady=3)
 
 #end Semester
 
+'''''''''
 #start Student id
 stud_id_label = Label(Course_data_frame, text="Student Id",
                          font=('Microsoft YaHei UI Light ',10,'bold'))
@@ -410,6 +412,7 @@ stud_id_entry = Entry(Course_data_frame,width=25,fg='#181823',border=1,bg="#ECF9
                          font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_studid)
 stud_id_entry.grid(row=5,column=1,padx=5,pady=3)
 #end Student id
+'''''
 
 # start department
 dept_label = Label(Course_data_frame, text="Department",
@@ -429,7 +432,7 @@ def clear():
     lec_email_entry.delete(0,END)
     acadymic_year_entry.delete(0,END)
     txtvar_of_semester.set('')
-    stud_id_entry.delete(0, END)
+    #stud_id_entry.delete(0, END)
     txtvar_of_department.set('')
     search_entry.delete(0, END)
 
@@ -440,26 +443,25 @@ def update():
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_lec_email = mycursor.fetchone()
-        query = "select * from student where student_id=%s"
-        mycursor.execute(query, (txtvar_of_studid.get()))
-        row_studid = mycursor.fetchone()
+        #query = "select * from student where student_id=%s"
+        #mycursor.execute(query, (txtvar_of_studid.get()))
+        #row_studid = mycursor.fetchone()
         if txtvar_of_courseid.get() == '' or txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
         elif row_lec_email is None:
             messagebox.showerror('Error', 'Lecturer email did not create yet')
-        elif row_studid is None:
-            messagebox.showerror('Error', 'Student Id does not exist')
+        #elif row_studid is None:
+            #messagebox.showerror('Error', 'Student Id does not exist')
         else:
             t1 = txtvar_of_course_name.get()
             t2 = txtvar_of_department.get()
             t3 = txtvar_of_lectemail.get()
             t4 = txtvar_of_acadymic_year.get()
             t5 = txtvar_of_semester.get()
-            t6= txtvar_of_studid.get()
-            t7= txtvar_of_courseid.get()
+            t6= txtvar_of_courseid.get()
             if messagebox.askyesno("Confirm", "Are you sure want to update"):
-                update_email_query = "update course set course_name=%s , dept_name=%s , lecturer_email=%s , acadymic_year=%s , semester=%s , student_id=%s where course_id=%s"
-                mycursor.execute(update_email_query, (t1,t2,t3,t4,t5,t6,t7))
+                update_email_query = "update course set course_name=%s , dept_name=%s , lecturer_email=%s , acadymic_year=%s , semester=%s  where course_id=%s"
+                mycursor.execute(update_email_query, (t1,t2,t3,t4,t5,t6))
                 con_db.commit()
                 reset()
                 messagebox.showinfo('Done', 'Updated Successfully')
@@ -471,7 +473,7 @@ def update():
 
 def delete():
     try:
-        if txtvar_of_courseid.get() == '' or txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get()== '' or txtvar_of_studid.get()== '':
+        if txtvar_of_courseid.get() == '' or txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get()== '' :
             messagebox.showerror('Eror', 'All fields are required')
         elif messagebox.askyesno("Confirm", "Are you sure want to delete this record"):
             delete_lec_query = "delete from course where course_id = %s"
@@ -491,25 +493,25 @@ def insert():
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_lec_email = mycursor.fetchone()
-        query = "select * from student where student_id=%s"
-        mycursor.execute(query, (txtvar_of_studid.get()))
-        row_studid = mycursor.fetchone()
+        #query = "select * from student where student_id=%s"
+        #mycursor.execute(query, (txtvar_of_studid.get()))
+        #row_studid = mycursor.fetchone()
         query = 'select * from course where course_id=%s '
         mycursor.execute(query,(txtvar_of_courseid.get()))
         row_course_id = mycursor.fetchone()
-        if txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get()== '' or txtvar_of_studid.get() == '':
+        if txtvar_of_course_name.get() == '' or txtvar_of_department.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_acadymic_year.get() == '' or txtvar_of_semester.get()== '':
             messagebox.showerror('Eror', 'All fields are required')
         elif row_lec_email is None:
             messagebox.showerror('Error', 'Lecturer email did not create yet')
-        elif row_studid is None:
-            messagebox.showerror('Error', 'Student Id does not exist')
+        #elif row_studid is None:
+            #messagebox.showerror('Error', 'Student Id does not exist')
         elif row_course_id is not None:
             messagebox.showerror('Error', 'This record is already exist')
         else:
-            insert_lec_query = "insert into course(course_name,dept_name,lecturer_email,acadymic_year,semester,student_id) values(%s,%s,%s,%s,%s,%s)"
+            insert_lec_query = "insert into course(course_name,dept_name,lecturer_email,acadymic_year,semester) values(%s,%s,%s,%s,%s)"
             mycursor.execute(insert_lec_query, (
                 txtvar_of_course_name.get(), txtvar_of_department.get(), txtvar_of_lectemail.get(),
-                txtvar_of_acadymic_year.get(), txtvar_of_semester.get(), txtvar_of_studid.get()))
+                txtvar_of_acadymic_year.get(), txtvar_of_semester.get()))
             messagebox.showinfo('Done', 'Record is inserted')
             con_db.commit()
             reset()

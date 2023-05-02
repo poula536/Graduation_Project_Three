@@ -419,6 +419,8 @@ def insert():
         row_lec_id = mycursor.fetchone()
         if txtvar_of_lectemail.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
+        elif txtvar_of_lectemail.get() != '@gmail.com' or txtvar_of_lectemail.get() !='@':
+            messagebox.showerror("Error", 'Email should contain @gmail 0r @example')
         elif row_lec_id is not None:
             messagebox.showerror("Error", 'This record is already exist')
         else:

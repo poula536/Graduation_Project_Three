@@ -37,6 +37,7 @@ create table student
 (
 student_fullname varchar(30) not null,
 student_id int not null,
+course_name varchar(30),
 department_name varchar(30) not null,
 constraint student_pk primary key (student_id)
 );
@@ -58,17 +59,17 @@ dept_name varchar(30) not null,
 lecturer_email varchar(50),
 acadymic_year varchar(25) not null,
 semester varchar(25) not null,
-student_id int,
-dep_id int ,
-lecturer_id int ,
-constraint course_pk primary key (course_id),
-constraint course_student_fk foreign key (student_id) references student(student_id),
-constraint course_lecturer_fk foreign key (lecturer_id) references lecturer(lecturer_id),
-constraint course_depart_fk foreign key(dep_id) references department (department_id)
+constraint course_pk primary key (course_id)
+#student_id int,
+#dep_id int ,
+#lecturer_id int ,
+#constraint course_student_fk foreign key (student_id) references student(student_id),
+#constraint course_lecturer_fk foreign key (lecturer_id) references lecturer(lecturer_id),
+#constraint course_depart_fk foreign key(dep_id) references department (department_id)
 );
-insert into course(course_name,dept_name,dep_id,lecturer_email,acadymic_year,semester,student_id) values('database','علوم حاسب',1,'poula@gmail.com','22/23','first',320200029),
-																											('operating system','علوم حاسب',1,'pepo@gmail.com','22/23','first',320200157),
-																											('structure programming','علوم حاسب',1,'basil@gmail.com','22/23','second',320200123);
+insert into course(course_name,dept_name,lecturer_email,acadymic_year,semester) values('database','علوم حاسب','poula@gmail.com','22/23','first'),
+																						('operating system','علوم حاسب','pepo@gmail.com','22/23','first'),
+																						('structure programming','علوم حاسب','basil@gmail.com','22/23','second');
 																			
 
 
@@ -161,7 +162,7 @@ select  co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.ful
 from course co  join lecturer lec on lec.email = co.lecturer_email ;
 
 
-select * from student;
+select * from course;
 #query to show table course and student
 select  co.course_id ,co.course_name , co.student_id ,co.dept_name , co.acadymic_year , co.semester, stu.student_fullname,stu.student_id
 from course co  join student stu on co.student_id = stu.student_id;
