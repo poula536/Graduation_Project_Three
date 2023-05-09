@@ -260,6 +260,20 @@ dept_combobox['values'] = (' علوم حاسب',
                           )
 
 dept_combobox.grid(row=0,column=3,padx=5,pady=3)
+
+#add image
+def showImage():
+    fln=filedialog.askopenfilename(initialdir=os.getcwd(),title="Select Image file", filetypes=(("JPG file","*.jpg"),\
+        ("PNGfile","*.png"),("All Files","*.*")))
+    img=Image.open(fln)
+    
+    img=ImageTk.PhotoImage(img)
+    print("photo uploaded succusfuly")
+    #img.thumbnail((350,350))
+add_image_btn=Button(stud_data_frame,width=15,text="add image",cursor='hand2',fg='white',background="#12B371",bd=0,activebackground="#ECF9FF",
+                   font=('Microsoft YaHei UI Light ',11,'bold'),command=showImage)
+add_image_btn.place(x=350,y=50)
+
 #
 def clear():
     txtvar_of_stuid.set('')
