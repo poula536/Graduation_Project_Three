@@ -48,9 +48,10 @@ def showdata(row):
     for i in row:
         trv.insert('','end',values=i)
 
-trv = ttk.Treeview(atten_list_frame, columns=(1,2,3,4,5,6),show="headings",height="7")
-trv.pack()
-
+trv = ttk.Treeview(atten_list_frame, columns=(1,2,3,4,5,6),show="headings",height="10")
+trv.place(x=110,y=10)
+yscrollbar = ttk.Scrollbar(atten_list_frame,orient="vertical",command=trv.yview)
+yscrollbar.pack(side=RIGHT,fill='y')
 #styling the head of table
 s = ttk.Style(trv)
 s.theme_use('clam')
@@ -123,15 +124,15 @@ def savefile():
 # make export and import and save buttons
 exp_btn = Button(atten_list_frame,width=20,text="Export File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=exportfile)
-exp_btn.place(x= 420, y=210)
+exp_btn.place(x= 420, y=270)
 
 imp_btn = Button(atten_list_frame,width=20,text="Import File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=importfile)
-imp_btn.place(x= 620, y=210)
+imp_btn.place(x= 620, y=270)
 
 save_btn = Button(atten_list_frame,width=20,text="Save Data ",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=savefile)
-save_btn.place(x= 820, y= 210)
+save_btn.place(x= 820, y= 270)
 
 #show the table of the lecturer
 try:
@@ -203,154 +204,6 @@ def getrow(event):
     txtvar_of_semester.set(data['values'][5])
 
 trv.bind("<Double-1>", getrow)
-
-'''''''''
-#start Lecturer ID
-stud_id_label = Label(atten_data_frame,text="Student ID",font=('Microsoft YaHei UI Light ',10,'bold'))
-stud_id_label.grid(row=0,column=0,padx=5,pady=3)
-
-stud_id_entry = Entry(atten_data_frame,state="disabled" ,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_stud_name)
-stud_id_entry.grid(row=0,column=1,padx=5,pady=3)
-#end Lecturer ID
-
-#start Full Name
-stud_fullname_label = Label(atten_data_frame, text="Full Name",
-                        font=('Microsoft YaHei UI Light ',10,'bold'))
-stud_fullname_label.grid(row=1,column=0,padx=5,pady=3)
-stud_fullname_entry = Entry(atten_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_date_time)
-stud_fullname_entry.grid(row=1,column=1,padx=5,pady=3)
-#end Full Name
-
-#start Email
-acadymicyear_label = Label(atten_data_frame, text="Acadymic Year",
-                        font=('Microsoft YaHei UI Light ',10,'bold'))
-acadymicyear_label.grid(row=2,column=0,padx=5,pady=3)
-acadymicyear_entry = Entry(atten_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_attend_course_name)
-acadymicyear_entry.grid(row=2,column=1,padx=5,pady=3)
-#end Email
-
-#start Password
-semester_label = Label(atten_data_frame, text="Semester",
-                         font=('Microsoft YaHei UI Light ',10,'bold'))
-semester_label.grid(row=3,column=0,padx=5,pady=3)
-semester_combobox = ttk.Combobox(atten_data_frame, width=31, textvariable=txtvar_of_student_id)
-
-semester_combobox['values'] = ('first','second')
-
-semester_combobox.grid(row=3,column=1,padx=5,pady=3)
-#end Password
-
-#
-
-dept_combobox = ttk.Combobox(atten_data_frame, width=15, textvariable=txtvar_of_acadymic_year)
-
-password_label = Label(atten_data_frame, text="Department",
-                         font=('Microsoft YaHei UI Light ',10,'bold'))
-password_label.grid(row=0,column=2,padx=5,pady=3)
-# Adding combobox drop down list
-dept_combobox['values'] = (' علوم حاسب',
-                          ' نظم ومعلومات',
-                          ' اداره اعمال',
-                          )
-
-dept_combobox.grid(row=0,column=3,padx=5,pady=3)
-'''''
-'''''''''
-#
-def clear():
-    txtvar_of_stuid.set('')
-    stud_fullname_entry.delete(0,END)
-    acadymicyear_entry.delete(0,END)
-    txtvar_of_semester.set('')
-    txtvar_of_department.set('')
-    search_entry.delete(0, END)
-
-
-def update():
-    try:
-        query = 'select * from student where student_id=%s '
-        mycursor.execute(query, (txtvar_of_stuid.get()))
-        row_studid = mycursor.fetchone()
-        if txtvar_of_full_name.get() == '' or txtvar_of_acadymic.get() == '' or txtvar_of_semester.get() == '' or txtvar_of_department.get() == '':
-            messagebox.showerror('Eror', 'All fields are required')
-        elif row_studid is None:
-            messagebox.showerror('Error', 'This Student not in the system')
-        else:
-            t1 = txtvar_of_full_name.get()
-            t2 = txtvar_of_acadymic.get()
-            t3 = txtvar_of_semester.get()
-            t4 = txtvar_of_department.get()
-            t5 = txtvar_of_stuid.get()
-            if messagebox.askyesno("Confirm", "Are you sure want to update"):
-                update_query = "update student set fullname=%s , acadymic_year=%s , semester=%s , department_name=%s where student_id =%s"
-                mycursor.execute(update_query, (t1,t2,t3,t4,t5))
-                con_db.commit()
-                reset()
-                messagebox.showinfo('Done', 'Updated Successfully')
-            else:
-                return True
-    except Exception as err:
-        messagebox.showwarning('Error','DB exception: %s' % err)
-
-
-def delete():
-    try:
-        if txtvar_of_stuid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_acadymic.get() == '' or txtvar_of_semester.get() == '' or txtvar_of_department.get() == '':
-            messagebox.showerror('Eror', 'All fields are required')
-        elif messagebox.askyesno("Confirm", "Are you sure want to delete this record"):
-            delete_query = "delete from student where student_id = %s"
-            mycursor.execute(delete_query, (txtvar_of_stuid.get()))
-            con_db.commit()
-            reset()
-            messagebox.showinfo('Done', 'Record is deleted')
-        else:
-            return True
-    except Exception as err:
-        messagebox.showwarning('Error','DB exception: %s' % err)
-
-
-
-def insert():
-    try:
-        query = 'select * from student where student_id=%s '
-        mycursor.execute(query, (txtvar_of_stuid.get()))
-        row_stu_id = mycursor.fetchone()
-        if txtvar_of_stuid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_acadymic.get() == '' or txtvar_of_semester.get()== '' or txtvar_of_department.get() == '':
-            messagebox.showerror('Eror', 'All fields are required')
-        elif row_stu_id is not None:
-            messagebox.showerror("Error", 'This record is already exist')
-        else:
-            insert_query = "insert into student(student_id,fullname,acadymic_year,semester,department_name) values(%s,%s,%s,%s,%s)"
-            mycursor.execute(insert_query, (
-                txtvar_of_stuid.get(), txtvar_of_full_name.get(), txtvar_of_acadymic.get(),txtvar_of_semester.get(),
-                txtvar_of_department.get()))
-            messagebox.showinfo('Done', 'Record is inserted')
-            con_db.commit()
-            reset()
-    except Exception as err:
-        messagebox.showwarning('Error','DB exception: %s' % err)
-
-
-update_btn = Button(stud_data_frame,width=20,text="Update",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
-                   font=('Microsoft YaHei UI Light ',11,'bold'),command=update)
-update_btn.place(x=310,y=150)
-
-update_btn = Button(stud_data_frame,width=20,text="Delete",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
-                   font=('Microsoft YaHei UI Light ',11,'bold'),command=delete)
-update_btn.place(x=510,y=150)
-
-update_btn = Button(stud_data_frame,width=20,text="Insert",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
-                   font=('Microsoft YaHei UI Light ',11,'bold'),command=insert)
-update_btn.place(x=710,y=150)
-
-update_btn = Button(stud_data_frame,width=20,text="Clear Fields",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
-                   font=('Microsoft YaHei UI Light ',11,'bold'),command=clear)
-update_btn.place(x=910,y=150)
-
-'''''
 
 
 attendance_sheet_window.mainloop()

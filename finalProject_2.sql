@@ -12,7 +12,7 @@ create table lecturer(
     constraint lect_dept_fk foreign key (department_id) references department(department_id)
 );
 
-#drop table lecturer;
+#select * from lecturer;
 #insert into lecturer(full_name,email,pass,dep_name) values('poula mansour','poula@gmail.com',1234,'علوم حاسب'),
 															#('pepo maher','pepo@gmail.com',12345,'علوم حاسب'),
 															#('basil essam','basil@gmail.com',123456,'نظم ومعلومات');
@@ -20,6 +20,16 @@ create table lecturer(
 #alter table lecturer add constraint lect_dept_fk foreign key (department_name) references department(dep_name);
 #select * from lecturer;
 
+create table currentlogin(
+	curent varchar(30),
+	lect_id int,
+    constraint currentlogin_lect_fk foreign key(lect_id) references lecturer(lecturer_id)
+);
+#insert into currentlogin(curent) values('poula@gmail.com');
+
+#select * from currentlogin;
+#select  full_name from lecturer join currentlogin on curent = email;
+#select course_name from course join currentlogin on curent = lecturer_email;
 
 create table admin(
 	 admin_id int not null auto_increment,
@@ -133,15 +143,15 @@ constraint attendance_stud_fk foreign key (stud_id) references student(student_i
 insert into attendance_sheet(stud_name,date_time,attend_course_name) values('poula mansour','5 pm','database');
 
 #select * from attendance_sheet;
-#select * from student;
+#select * from lecturer;
 #drop table attendance_sheet;
 
-select distinct shee.stud_name,shee.date_time,shee.attend_course_name,stu.fullname,stu.fullname,stu.student_id , stu.acadymic_year, stu.semester 
-from attendance_sheet shee  
-join student stu on left(shee.stud_name,5) = left(stu.fullname,5)  order by semester asc;
+#select distinct shee.stud_name,shee.date_time,shee.attend_course_name,stu.fullname,stu.fullname,stu.student_id , stu.acadymic_year, stu.semester 
+#from attendance_sheet shee  
+#join student stu on left(shee.stud_name,5) = left(stu.fullname,5)  order by semester asc;
 
-select * from  student stu
-join attendance_sheet shee on left(stu.fullname,5) = left(shee.stud_name,5)  order by semester asc;
+#select * from  student stu
+#join attendance_sheet shee on left(stu.fullname,5) = left(shee.stud_name,5)  order by semester asc;
 
 create table face_record
 (

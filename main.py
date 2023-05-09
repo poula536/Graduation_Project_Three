@@ -95,10 +95,14 @@ def login():
         if row == None:
             messagebox.showerror('Error', 'invalid email or password')
         else:
+            query = "insert into currentlogin(curent) values(%s)"
+            mycursor.execute(query,(email_entry.get()))
+            print(email_entry.get())
+            con_db.commit()
             login_window.withdraw()
             from dashboard_doc import doctor_window
-            doctor_window.withdraw()
-            Label(doctor_window,text=great_doc(),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30)).place(x=210,y=20)
+            #doctor_window.withdraw()
+            #Label(doctor_window,text=great_doc(),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30)).place(x=210,y=20)
             doctor_window.deiconify()
 
 
@@ -115,8 +119,6 @@ btn_login.place(x=30,y=250)
 admin_btn = Button(frame,text="Log in as admin",cursor='hand2',fg='red',bg="#ECF9FF",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',10,'bold'),command=admin_login)
 admin_btn.place(x=115,y=300)
-
-
 
 
 

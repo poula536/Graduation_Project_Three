@@ -1,7 +1,5 @@
 import tkinter
 from tkinter import *
-from tkinter import messagebox
-
 
 attendance_window=Tk()
 attendance_window.title("Attendance System")
