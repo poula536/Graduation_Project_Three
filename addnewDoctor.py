@@ -197,13 +197,13 @@ img_logo =tkinter.PhotoImage(file='logo.png',master=new_doctor_window)
 new_doctor_window.iconphoto(False,img_logo)
 
 
-course_list_frame = LabelFrame(new_doctor_window,text="Lecturer List")
+lect_list_frame = LabelFrame(new_doctor_window,text="Lecturer List")
 search_frame = LabelFrame(new_doctor_window,text="Search")
-course_data_frame = LabelFrame(new_doctor_window,text="Lecturer Data")
+lect_data_frame = LabelFrame(new_doctor_window,text="Lecturer Data")
 
-course_list_frame.pack(fill="both",expand="yes",padx=20,pady=10)
+lect_list_frame.pack(fill="both",expand="yes",padx=20,pady=10)
 search_frame.pack(fill="both",expand="yes",padx=20,pady=10)
-course_data_frame.pack(fill="both",expand="yes" ,padx=20,pady=10)
+lect_data_frame.pack(fill="both",expand="yes" ,padx=20,pady=10)
 
 def backfw_btn():
     new_doctor_window.withdraw()
@@ -211,7 +211,7 @@ def backfw_btn():
     dashboard_admin.admin_dashboard_window.deiconify()
 
 bfw_btn = tkinter.PhotoImage(file='backfw.png',master=new_doctor_window)
-back_forward_btn = Button(course_list_frame,cursor='hand2',image=bfw_btn,bd=0,
+back_forward_btn = Button(lect_list_frame,cursor='hand2',image=bfw_btn,bd=0,
                           bg="#ECF9FF",activebackground="#ECF9FF",height=60,width=60,command=backfw_btn)
 back_forward_btn.place(x=10,y=5)
 
@@ -227,7 +227,7 @@ s = ttk.Style(new_doctor_window)
 s.theme_use('clam')
 s.configure('Treeview.Heading', background="green3")
 
-trv = ttk.Treeview(course_list_frame, columns=(1,2,3,4,5),show="headings",height="7")
+trv = ttk.Treeview(lect_list_frame, columns=(1,2,3,4,5),show="headings",height="7")
 trv.pack()
 
 trv.column(1, anchor=CENTER)
@@ -313,51 +313,55 @@ def getrow(event):
 trv.bind("<Double-1>", getrow)
 
 #start Lecturer ID
-course_id_label = Label(course_data_frame, text="Lecturer ID",font=('Microsoft YaHei UI Light ',10,'bold'))
+course_id_label = Label(lect_data_frame, text="Lecturer ID",font=('Microsoft YaHei UI Light ',10,'bold'))
 course_id_label.grid(row=0,column=0,padx=5,pady=3)
 
-course_id_entry = Entry(course_data_frame,state='disabled',width=25,fg='#181823',border=1,bg="#ECF9FF",
+course_id_entry = Entry(lect_data_frame,state='disabled',width=25,fg='#181823',border=1,bg="#ECF9FF",
                         font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_lecid)
 course_id_entry.grid(row=0,column=1,padx=5,pady=3)
 #end Lecturer ID
 
 #start Full Name
-lec_fullname_label = Label(course_data_frame, text="Full Name",
+lec_fullname_label = Label(lect_data_frame, text="Full Name",
                         font=('Microsoft YaHei UI Light ',10,'bold'))
 lec_fullname_label.grid(row=1,column=0,padx=5,pady=3)
-lec_fullname_entry = Entry(course_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+lec_fullname_entry = Entry(lect_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
                         font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_full_name)
 lec_fullname_entry.grid(row=1,column=1,padx=5,pady=3)
 #end Full Name
 
 #start Email
-lec_email_label = Label(course_data_frame, text="Email",
+lec_email_label = Label(lect_data_frame, text="Email",
                         font=('Microsoft YaHei UI Light ',10,'bold'))
 lec_email_label.grid(row=2,column=0,padx=5,pady=3)
-lec_email_entry = Entry(course_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+lec_email_entry = Entry(lect_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
                         font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_lectemail)
 lec_email_entry.grid(row=2,column=1,padx=5,pady=3)
 #end Email
 
 #start Password
-password_label = Label(course_data_frame, text="Password",
+password_label = Label(lect_data_frame, text="Password",
                          font=('Microsoft YaHei UI Light ',10,'bold'))
 password_label.grid(row=3,column=0,padx=5,pady=3)
-dpassword_entry = Entry(course_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+dpassword_entry = Entry(lect_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
                          font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_password)
 dpassword_entry.grid(row=3,column=1,padx=5,pady=3)
 #end Password
 
 #
-dept_combobox = ttk.Combobox(course_data_frame, width=15, textvariable=txtvar_of_department)
 
+dept_combobox = ttk.Combobox(lect_data_frame, width=15, textvariable=txtvar_of_department)
+
+password_label = Label(lect_data_frame, text="Department",
+                         font=('Microsoft YaHei UI Light ',10,'bold'))
+password_label.grid(row=0,column=2,padx=5,pady=3)
 # Adding combobox drop down list
 dept_combobox['values'] = (' علوم حاسب',
                           ' نظم ومعلومات',
                           ' اداره اعمال',
                           )
 
-dept_combobox.place(x=340 , y=5)
+dept_combobox.grid(row=0,column=3,padx=5,pady=3)
 #
 def clear():
     txtvar_of_lecid.set('')
@@ -373,7 +377,7 @@ def update():
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_email = mycursor.fetchone()
-        if txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
+        if txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
         elif row_email is None:
             messagebox.showerror('Error', 'This Email did not create yet')
@@ -397,7 +401,7 @@ def update():
 
 def delete():
     try:
-        if txtvar_of_lecid.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == None:
+        if txtvar_of_lecid.get() == '' or txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
         elif messagebox.askyesno("Confirm", "Are you sure want to delete this record"):
             delete_lec_query = "delete from lecturer where lecturer_id = %s"
@@ -435,19 +439,19 @@ def insert():
         messagebox.showwarning('Error','DB exception: %s' % err)
 
 
-update_btn = Button(course_data_frame,width=20,text="Update",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+update_btn = Button(lect_data_frame,width=20,text="Update",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=update)
 update_btn.place(x=310,y=150)
 
-update_btn = Button(course_data_frame,width=20,text="Delete",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+update_btn = Button(lect_data_frame,width=20,text="Delete",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=delete)
 update_btn.place(x=510,y=150)
 
-update_btn = Button(course_data_frame,width=20,text="Insert",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+update_btn = Button(lect_data_frame,width=20,text="Insert",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=insert)
 update_btn.place(x=710,y=150)
 
-update_btn = Button(course_data_frame,width=20,text="Clear Fields",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+update_btn = Button(lect_data_frame,width=20,text="Clear Fields",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=clear)
 update_btn.place(x=910,y=150)
 

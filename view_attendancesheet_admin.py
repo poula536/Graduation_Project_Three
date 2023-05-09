@@ -10,38 +10,37 @@ con_db = pymysql.connect(host='localhost', user='root', password='123456789')
 mycursor = con_db.cursor()
 query = 'use facerecognation_attendance_System'
 mycursor.execute(query)
-show_table_stu_query="select * from student"
+show_attendance_sheet_query=" select distinct shee.stud_name,shee.date_time,shee.attend_course_name,stu.fullname,stu.student_id , stu.acadymic_year, stu.semester from attendance_sheet shee  join student stu on left(shee.stud_name,5) = left(stu.fullname,5)  order by semester asc"
 
-addstudent_window = Tk()
-addstudent_window.title("Add Student")
-addstudent_window.geometry("1450x720+40+40")
-addstudent_window.config(bg="#ECF9FF")
-addstudent_window.resizable(False,False)
-img_logo =tkinter.PhotoImage(file='logo.png',master=addstudent_window)
-addstudent_window.iconphoto(False,img_logo)
+attendance_sheet_window = Tk()
+attendance_sheet_window.title("Attendance Sheet")
+attendance_sheet_window.geometry("1450x720+40+40")
+attendance_sheet_window.config(bg="#ECF9FF")
+attendance_sheet_window.resizable(False,False)
+img_logo =tkinter.PhotoImage(file='logo.png',master=attendance_sheet_window)
+attendance_sheet_window.iconphoto(False,img_logo)
 
 
-stud_list_frame = LabelFrame(addstudent_window,text="Student List")
-search_frame = LabelFrame(addstudent_window,text="Search")
-stud_data_frame = LabelFrame(addstudent_window,text="Student Data")
+atten_list_frame = LabelFrame(attendance_sheet_window,text="Attendance List")
+search_frame = LabelFrame(attendance_sheet_window,text="Search")
+#atten_data_frame = LabelFrame(attendance_sheet_window,text="Student Data")
 
-stud_list_frame.pack(fill="both",expand="yes",padx=20,pady=10)
+atten_list_frame.pack(fill="both",expand="yes",padx=20,pady=10)
 search_frame.pack(fill="both",expand="yes",padx=20,pady=10)
-stud_data_frame.pack(fill="both",expand="yes" ,padx=20,pady=10)
+#atten_data_frame.pack(fill="both",expand="yes" ,padx=20,pady=10)
 
 
 def backfw_btn():
-    addstudent_window.withdraw()
+    attendance_sheet_window.withdraw()
     import dashboard_admin
     dashboard_admin.admin_dashboard_window.deiconify()
 
-bfw_btn = tkinter.PhotoImage(file='backfw.png',master=addstudent_window)
-back_forward_btn = Button(stud_list_frame,cursor='hand2',image=bfw_btn,bd=0,
+bfw_btn = tkinter.PhotoImage(file='backfw.png',master=attendance_sheet_window)
+back_forward_btn = Button(atten_list_frame,cursor='hand2',image=bfw_btn,bd=0,
                           bg="#ECF9FF",activebackground="#ECF9FF",height=60,width=60,command=backfw_btn)
 back_forward_btn.place(x=10,y=5)
 
 mydata = []
-li = []
 def showdata(row):
     global mydata
     mydata = list(row)
@@ -49,7 +48,7 @@ def showdata(row):
     for i in row:
         trv.insert('','end',values=i)
 
-trv = ttk.Treeview(stud_list_frame, columns=(1,2,3,4,5),show="headings",height="7")
+trv = ttk.Treeview(atten_list_frame, columns=(1,2,3,4,5,6),show="headings",height="7")
 trv.pack()
 
 #styling the head of table
@@ -59,20 +58,22 @@ s.configure('Treeview.Heading', background="green3")
 
 
 trv.column(1, anchor=CENTER)
-trv.heading(1, text="student_id")
+trv.heading(1, text="student name")
 
 trv.column(2, anchor=CENTER)
-trv.heading(2, text="full_name")
+trv.heading(2, text="date_time")
 
 trv.column(3, anchor=CENTER)
-trv.heading(3, text="acadymic_year")
+trv.heading(3, text="attend_course_name")
 
 trv.column(4, anchor=CENTER)
-trv.heading(4, text="semester")
+trv.heading(4, text="student_id")
 
 trv.column(5, anchor=CENTER)
-trv.heading(5, text="department_name")
+trv.heading(5, text="acadymic_year")
 
+trv.column(6, anchor=CENTER)
+trv.heading(6, text="semester")
 #student list section
 
 def exportfile():
@@ -103,47 +104,38 @@ def importfile():
 
 def savefile():
         try:
-            for i in mydata:
-                if len(str(i[0])) < 9 or len(str(i[0])) > 9:
-                    messagebox.showerror('Invalid ID', "Invalid Student ID for: %s" % i[1])
-                elif mydata[0] == None:
-                    messagebox.showerror("erorr", "There is no data to save")
-                else:
-                    break
             if messagebox.askyesno("Confirmation", "Are you sure you wnat to save to database"):
                 for i in mydata:
-                    stu_id = i[0]
-                    fullname = i[1]
-                    acadymic_year = i[2]
-                    semester = i[3]
-                    department_name = i[4]
-                    query = "insert into student(student_id,fullname,acadymic_year,semester,department_name) values(%s,%s,%s,%s,%s)"
-                    mycursor.execute(query, (stu_id, fullname, acadymic_year, semester, department_name))
+                    stud_name = i[0]
+                    date_time = i[1]
+                    attend_course_name = i[2]
+                    query = "insert into attendance_sheet(stud_name,date_time,attend_course_name) values(%s,%s,%s)"
+                    mycursor.execute(query, (stud_name, date_time, attend_course_name))
                 con_db.commit()
                 reset()
                 messagebox.showinfo("Data Saved", "Data has been saved to database")
             else:
                 return False
-        except Exception :
-            messagebox.showerror("Error","This Data is already exist")
+        except Exception as err:
+            messagebox.showerror("Error","%s" %err)
 
 
 # make export and import and save buttons
-exp_btn = Button(stud_list_frame,width=20,text="Export File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+exp_btn = Button(atten_list_frame,width=20,text="Export File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=exportfile)
 exp_btn.place(x= 420, y=210)
 
-imp_btn = Button(stud_list_frame,width=20,text="Import File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+imp_btn = Button(atten_list_frame,width=20,text="Import File CSV",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=importfile)
 imp_btn.place(x= 620, y=210)
 
-save_btn = Button(stud_list_frame,width=20,text="Save Data ",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
+save_btn = Button(atten_list_frame,width=20,text="Save Data ",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=savefile)
 save_btn.place(x= 820, y= 210)
 
 #show the table of the lecturer
 try:
-    mycursor.execute(show_table_stu_query)
+    mycursor.execute(show_attendance_sheet_query)
     row = mycursor.fetchall()
     showdata(row)
 except Exception as err:
@@ -152,20 +144,21 @@ except Exception as err:
 #reset btn
 def reset():
     try:
-        mycursor.execute(show_table_stu_query)
+        mycursor.execute(show_attendance_sheet_query)
         row = mycursor.fetchall()
         showdata(row)
     except Exception as err:
         messagebox.showwarning('Error', 'DB exception: %s' % err)
 
 #search section
-#get data
-txtvar_of_stuid = StringVar(master=addstudent_window)
-txtvar_of_full_name = StringVar(master=addstudent_window)
-txtvar_of_acadymic = StringVar(master=addstudent_window)
-txtvar_of_semester = StringVar(master=addstudent_window)
-txtvar_of_department = StringVar(master=addstudent_window)
 
+#get data
+txtvar_of_stud_name = StringVar(master=attendance_sheet_window)
+txtvar_of_date_time = StringVar(master=attendance_sheet_window)
+txtvar_of_attend_course_name = StringVar(master=attendance_sheet_window)
+txtvar_of_student_id= StringVar(master=attendance_sheet_window)
+txtvar_of_acadymic_year= StringVar(master=attendance_sheet_window)
+txtvar_of_semester= StringVar(master=attendance_sheet_window)
 #search for record
 #txtvar_of_search = StringVar()
 def search():
@@ -174,7 +167,7 @@ def search():
         messagebox.showerror('Error','Enter name to search')
     else:
         try:
-            search_query = "select * from student where fullname like '%"+q+"%' or student_id like '%"+q+"%'"
+            search_query = "select shee.stud_name,shee.date_time,shee.attend_course_name,stu.student_id , stu.acadymic_year, stu.semester from attendance_sheet shee join student stu on left(shee.stud_name,5) = left(stu.fullname,5) and stu.student_id like '%"+q+"%' order by semester asc"
             mycursor.execute(search_query)
             row = mycursor.fetchall()#list of rows
             showdata(row)
@@ -183,15 +176,18 @@ def search():
 
 search_labl = Label(search_frame,text="Search",font=('Microsoft YaHei UI Light ',10,'bold'))
 search_labl.pack(side=tkinter.LEFT,padx=10)
-search_entry = Entry(search_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',15))
+search_entry = Entry(search_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+                     font=('Microsoft YaHei UI Light ',15))
 search_entry.pack(side=tkinter.LEFT, padx=20)
 
 serch_btn = Button(search_frame,text="Search",activebackground="#ECF9FF",bd=0,cursor="hand2",
-                   width=10,pady=5,background="#57a1f8",fg="white",font=('Microsoft YaHei UI Light ',10,'bold'),command=search)
+                   width=10,pady=5,background="#57a1f8",fg="white",
+                   font=('Microsoft YaHei UI Light ',10,'bold'),command=search)
 serch_btn.pack(side=tkinter.LEFT , padx=6)
 
 reset_btn = Button(search_frame,text="Reset",activebackground="#ECF9FF",bd=0,cursor="hand2",
-                   width=10,pady=5,background="#57a1f8",fg="white",font=('Microsoft YaHei UI Light ',10,'bold'),command=reset)
+                   width=10,pady=5,background="#57a1f8",fg="white",
+                   font=('Microsoft YaHei UI Light ',10,'bold'),command=reset)
 reset_btn.pack(side=tkinter.LEFT,padx=6)
 
 #student data section to update
@@ -199,47 +195,48 @@ reset_btn.pack(side=tkinter.LEFT,padx=6)
 def getrow(event):
     row_data = trv.identify_row(event.y)
     data = trv.item(trv.focus())
-    txtvar_of_stuid.set(data['values'][0])
-    txtvar_of_full_name.set(data['values'][1])
-    txtvar_of_acadymic.set(data['values'][2])
-    txtvar_of_semester.set(data['values'][3])
-    txtvar_of_department.set(data['values'][4])
-
+    txtvar_of_stud_name.set(data['values'][0])
+    txtvar_of_date_time.set(data['values'][1])
+    txtvar_of_attend_course_name.set(data['values'][2])
+    txtvar_of_student_id.set(data['values'][3])
+    txtvar_of_acadymic_year.set(data['values'][4])
+    txtvar_of_semester.set(data['values'][5])
 
 trv.bind("<Double-1>", getrow)
 
+'''''''''
 #start Lecturer ID
-stud_id_label = Label(stud_data_frame,text="Student ID",font=('Microsoft YaHei UI Light ',10,'bold'))
+stud_id_label = Label(atten_data_frame,text="Student ID",font=('Microsoft YaHei UI Light ',10,'bold'))
 stud_id_label.grid(row=0,column=0,padx=5,pady=3)
 
-stud_id_entry = Entry(stud_data_frame,state="disabled" ,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_stuid)
+stud_id_entry = Entry(atten_data_frame,state="disabled" ,width=25,fg='#181823',border=1,bg="#ECF9FF",
+                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_stud_name)
 stud_id_entry.grid(row=0,column=1,padx=5,pady=3)
 #end Lecturer ID
 
 #start Full Name
-stud_fullname_label = Label(stud_data_frame, text="Full Name",
+stud_fullname_label = Label(atten_data_frame, text="Full Name",
                         font=('Microsoft YaHei UI Light ',10,'bold'))
 stud_fullname_label.grid(row=1,column=0,padx=5,pady=3)
-stud_fullname_entry = Entry(stud_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_full_name)
+stud_fullname_entry = Entry(atten_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_date_time)
 stud_fullname_entry.grid(row=1,column=1,padx=5,pady=3)
 #end Full Name
 
 #start Email
-acadymicyear_label = Label(stud_data_frame, text="Acadymic Year",
+acadymicyear_label = Label(atten_data_frame, text="Acadymic Year",
                         font=('Microsoft YaHei UI Light ',10,'bold'))
 acadymicyear_label.grid(row=2,column=0,padx=5,pady=3)
-acadymicyear_entry = Entry(stud_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
-                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_acadymic)
+acadymicyear_entry = Entry(atten_data_frame,width=25,fg='#181823',border=1,bg="#ECF9FF",
+                        font=('Microsoft YaHei UI Light ',11),textvariable=txtvar_of_attend_course_name)
 acadymicyear_entry.grid(row=2,column=1,padx=5,pady=3)
 #end Email
 
 #start Password
-semester_label = Label(stud_data_frame, text="Semester",
+semester_label = Label(atten_data_frame, text="Semester",
                          font=('Microsoft YaHei UI Light ',10,'bold'))
 semester_label.grid(row=3,column=0,padx=5,pady=3)
-semester_combobox = ttk.Combobox(stud_data_frame, width=31, textvariable=txtvar_of_semester)
+semester_combobox = ttk.Combobox(atten_data_frame, width=31, textvariable=txtvar_of_student_id)
 
 semester_combobox['values'] = ('first','second')
 
@@ -248,9 +245,9 @@ semester_combobox.grid(row=3,column=1,padx=5,pady=3)
 
 #
 
-dept_combobox = ttk.Combobox(stud_data_frame, width=15, textvariable=txtvar_of_department)
+dept_combobox = ttk.Combobox(atten_data_frame, width=15, textvariable=txtvar_of_acadymic_year)
 
-password_label = Label(stud_data_frame, text="Department",
+password_label = Label(atten_data_frame, text="Department",
                          font=('Microsoft YaHei UI Light ',10,'bold'))
 password_label.grid(row=0,column=2,padx=5,pady=3)
 # Adding combobox drop down list
@@ -260,6 +257,8 @@ dept_combobox['values'] = (' علوم حاسب',
                           )
 
 dept_combobox.grid(row=0,column=3,padx=5,pady=3)
+'''''
+'''''''''
 #
 def clear():
     txtvar_of_stuid.set('')
@@ -351,4 +350,7 @@ update_btn = Button(stud_data_frame,width=20,text="Clear Fields",cursor='hand2',
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=clear)
 update_btn.place(x=910,y=150)
 
-addstudent_window.mainloop()
+'''''
+
+
+attendance_sheet_window.mainloop()

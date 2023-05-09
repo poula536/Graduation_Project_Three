@@ -56,6 +56,12 @@ def addstudent_btn():
     import addstudentsdata
     addstudentsdata.addstudent_window.deiconify()
 
+def attend_sheet_btn():
+    admin_dashboard_window.withdraw()
+    import view_attendancesheet_admin
+    view_attendancesheet_admin.attendance_sheet_window.deiconify()
+
+
 # create three buttons for taking attendance, adding new students, and viewing sheets
 attendance_button = Button(admin_dashboard_window, width=20,height=5,padx=60 ,pady=10,border=0, bg="#0081C9", fg='white', text="Create New Account For Lecturer",
                            font=("Arial", 13,'bold'), command=createAccount_btn)
@@ -80,5 +86,8 @@ student_button = Button(admin_dashboard_window, width=20, height=5,padx=60,pady=
                         command=addstudent_btn,font=("Arial", 13,'bold'))
 student_button.place(x=100, y=420)
 
+student_button = Button(admin_dashboard_window, width=20, height=5,padx=60,pady=10, border=0,bg="#0081C9", fg='white', text="View Attendance Sheet",
+                        command=attend_sheet_btn,font=("Arial", 13,'bold'))
+student_button.place(x=580, y=420)
 
 admin_dashboard_window.mainloop()

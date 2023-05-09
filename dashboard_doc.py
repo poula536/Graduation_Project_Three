@@ -58,7 +58,7 @@ def frames (x,b,z,d,n,subject_list):
         Frame(doctor_window, width=230, height=190, bg="#0081C9").place(x=x, y=130)
         Label(doctor_window, text=value[i], bg="#0081C9", fg='white', font=('Microsoft YaHei UI Light ', 15),borderwidth=0, relief="groove").place(x=b, y=140)
         Label(doctor_window, text=key, bg="#0081C9", fg='white', font=('Microsoft YaHei UI Light ', 15)).place(x=z, y=190)
-        Button(doctor_window, width=10, pady=7, text="الدخول", bg="white", fg='black', border=0, command=detals).place(x=d,y=240)
+        Button(doctor_window, width=10, pady=7, text="Enter", bg="white", fg='black', border=0, command=detals).place(x=d,y=240)
         if n > 1:
             x += 240
             b += 240
@@ -74,7 +74,8 @@ mycursor = con_db.cursor()
 query = 'use facerecognation_attendance_System'
 mycursor.execute(query)
 query = 'select course_name from course where lecturer_email =%s'
-mycursor.execute(query, 'pepo@gmail.com')
+#import main
+mycursor.execute(query,"poula@gmail.com")
 row = mycursor.fetchall()
 for i in row:
     res = "".join(i)

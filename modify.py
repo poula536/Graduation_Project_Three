@@ -69,13 +69,10 @@ trv.heading(5, text="full_name")
 trv.column(6, anchor=CENTER)
 trv.heading(6, text="email")
 
-#trv.column(7, anchor=CENTER)
-#trv.heading(7, text="semester")
 
 
 #show the table course related to table  of the lecturer
 try:
-    #query = "select course_id , course_name , lecturer_email , dept_name , student_id , acadymic_year , smaster from course"
     query = 'select distinct co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email from course co left outer join lecturer lec on lec.email = co.lecturer_email'
     mycursor.execute(query)
     row = mycursor.fetchall()
@@ -86,8 +83,6 @@ except Exception as err:
 #reset btn
 def reset():
     try:
-
-        #query = "select course_id , course_name , lecturer_email , dept_name , student_id , acadymic_year , smaster from course"
         query = 'select distinct co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email from course co left outer join lecturer lec on lec.email = co.lecturer_email'
         mycursor.execute(query)
         row = mycursor.fetchall()
@@ -103,7 +98,6 @@ def search():
         messagebox.showerror('Error','Enter Email to search')
     else:
         try:
-            #query="select course_id , course_name , lecturer_email , dept_name , student_id , acadymic_year , smaster from course where lecturer_email like '%" + q + "%'"
             qeury = "select distinct co.course_id , co.course_name, co.lecturer_email ,co.dept_name , lec.full_name , lec.email from course co join lecturer lec on lec.email = co.lecturer_email and co.lecturer_email like '%" + q + "%' "
             mycursor.execute(qeury)
             row = mycursor.fetchall()
