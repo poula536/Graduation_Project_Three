@@ -1,6 +1,7 @@
 import tkinter
 from tkinter import *
 from tkinter import ttk
+import tkinter as tk
 from tkinter import messagebox , filedialog
 import pymysql
 import csv
@@ -39,14 +40,15 @@ bfw_btn = tkinter.PhotoImage(file='backfw.png',master=attendance_sheet_window)
 back_forward_btn = Button(atten_list_frame,cursor='hand2',image=bfw_btn,bd=0,
                           bg="#ECF9FF",activebackground="#ECF9FF",height=60,width=60,command=backfw_btn)
 back_forward_btn.place(x=10,y=5)
-
 mydata = []
 def showdata(row):
     global mydata
     mydata = list(row)
+    my_var.set(str(len(mydata)))
     trv.delete(*trv.get_children())
     for i in row:
         trv.insert('','end',values=i)
+    
 
 trv = ttk.Treeview(atten_list_frame, columns=(1,2,3,4,5,6),show="headings",height="7")
 trv.pack()
@@ -132,6 +134,15 @@ imp_btn.place(x= 620, y=210)
 save_btn = Button(atten_list_frame,width=20,text="Save Data ",cursor='hand2',fg='white',background="#57a1f8",bd=0,activebackground="#ECF9FF",
                    font=('Microsoft YaHei UI Light ',11,'bold'),command=savefile)
 save_btn.place(x= 820, y= 210)
+
+#عدد الحضور 
+
+attendees_labl = Label(atten_list_frame,fg="#12B371",text="The number of attendees:",font=('Microsoft YaHei UI Light ',15,'bold'))
+attendees_labl.place(x=100,y=210)
+my_var = tk.StringVar()
+my_var.set(str(len(mydata)))
+my_label = tk.Label(atten_list_frame, textvariable=my_var,fg="#12B371",font=('Microsoft YaHei UI Light ',25,'bold'))
+my_label.place(x=220, y=250)
 
 #show the table of the lecturer
 try:
