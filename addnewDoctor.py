@@ -199,13 +199,14 @@ def clear():
 
 def update():
     try:
-        query = 'select * from lecturer where email=%s '
-        mycursor.execute(query, (txtvar_of_lectemail.get()))
-        row_email = mycursor.fetchone()
+        print(txtvar_of_full_name.get()[:5])
+        email ="@gmail.com"
         if txtvar_of_lectemail.get() == '' or txtvar_of_lecid.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
-        elif row_email is None:
-            messagebox.showerror('Error', 'This Email did not create yet')
+        elif txtvar_of_lectemail.get().find(txtvar_of_full_name.get()[:4]) == -1:
+            messagebox.showerror("Error","Invalid email or full name")
+        elif email not in txtvar_of_lectemail.get() or txtvar_of_lectemail.get()[:1] == '@':
+            messagebox.showerror("Error", "Email must be like: example@gmail.com")
         else:
             t1 = txtvar_of_full_name.get()
             t2 = txtvar_of_lectemail.get()
@@ -249,10 +250,12 @@ def insert():
         query = 'select * from lecturer where email=%s '
         mycursor.execute(query, (txtvar_of_lectemail.get()))
         row_lec_email = mycursor.fetchone()
-        lect_email = txtvar_of_lectemail.get()[0]+"@gmail.com"
+        email ="@gmail.com"
         if txtvar_of_lectemail.get() == '' or txtvar_of_full_name.get() == '' or txtvar_of_password.get() == '' or txtvar_of_department.get() == '':
             messagebox.showerror('Eror', 'All fields are required')
-        elif txtvar_of_lectemail.get() != lect_email:
+        elif txtvar_of_lectemail.get().find(txtvar_of_full_name.get()[:4]) == -1:
+            messagebox.showerror("Error", "Invalid email or full name")
+        elif email not in txtvar_of_lectemail.get() or txtvar_of_lectemail.get()[:1] == '@':
             messagebox.showerror("Error","Email must be like: example@gmail.com")
         elif row_lec_id is not None or row_lec_email is not None:
             messagebox.showerror("Error", 'This record is already exist')

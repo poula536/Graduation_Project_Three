@@ -95,8 +95,12 @@ def importfile():
                                         filetypes=(("CSV File", "*.csv"), ("All Files", "*.*")))
     with open(file) as myfile:
         csvread = csv.reader(myfile,delimiter=",")
+
         for i in csvread:
             mydata.append(i)
+        if mydata == []:
+            messagebox.showerror("Error","Can not import an empty file")
+            reset()
     showdata(mydata)
 
 
@@ -106,6 +110,7 @@ def savefile():
             for i in mydata:
                 if len(str(i[0])) < 9 or len(str(i[0])) > 9:
                     messagebox.showerror('Invalid ID', "Invalid Student ID for: %s" % i[1])
+                    return True
                 elif mydata[0] == None:
                     messagebox.showerror("erorr", "There is no data to save")
                 else:

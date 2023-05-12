@@ -23,10 +23,10 @@ def backfw_btn():
     query = "delete from currentlogin"
     mycursor.execute(query)
     con_db.commit()
-
     doctor_window.withdraw()
     import main
     main.login_window.deiconify()
+
 
 bfw_btn = tkinter.PhotoImage(file='logout.png',master=doctor_window)
 back_forward_btn = Button(doctor_window,cursor='hand2',image=bfw_btn,bd=0,bg="#ECF9FF",activebackground="#ECF9FF",height=80,width=80,command=backfw_btn)
@@ -39,14 +39,14 @@ def mapacounnt(row):
     return "welcome doctor "+ str(mydata)
 
 
-
+#print(row)
 acounnent = "select distinct full_name from lecturer join currentlogin on curent = email"
 mycursor.execute(acounnent)
-row = mycursor.fetchall()[0]
-mapacounnt(row)
+row = mycursor.fetchone()
+great_txt = "welcome doctor " + str(row)
+print(row)
 
-
-doct_name_labl=Label(doctor_window,text=mapacounnt(row),fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30))
+doct_name_labl=Label(doctor_window,text=great_txt,fg="#070A52",width=25,bg="#ECF9FF",font=('Microsoft YaHei UI Light ',30))
 doct_name_labl.place(x=210,y=20)
 
 
@@ -71,7 +71,7 @@ def frames (x,b,z,d,n,subject_list):
             value.remove(value[i])
             frames(x, b, z, d, n - 1,subject_list)
 
-
+'''''''''
 subject_list = {"Computer Science":[],"Information Systems":[],"Business Administration":[]}
 query = "select course_name from course join currentlogin on curent = lecturer_email"
 mycursor.execute(query)
@@ -85,9 +85,9 @@ for key in list(subject_list.keys()):
 
 count = len(subject_list["Computer Science"])
 frames(10,60,60,90,count,subject_list)
+'''''
 
-
-
+#con_db.close()
 doctor_window.mainloop()
 
 

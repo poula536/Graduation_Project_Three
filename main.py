@@ -97,8 +97,9 @@ def login():
         else:
             query = "insert into currentlogin(curent) values(%s)"
             mycursor.execute(query,(email_entry.get()))
-            print(email_entry.get())
+            #print(email_entry.get())
             con_db.commit()
+            con_db.close()
             login_window.withdraw()
             from dashboard_doc import doctor_window
             #doctor_window.withdraw()
